@@ -1,11 +1,11 @@
 # Intro
 
-Notes from the Rust book. Allow to remember the main ideas and concept
+Notes from the Rust book, describe main ideas and concepts.
 
 # Basics
 
 name with ! at the end are macros: println!(...)
-What is a macro in rust? Metaprogramming is done with macro in rustl
+What is a macro in rust? Metaprogramming is done with macros in rustl
 Rust is an expression oriented language and most of the things are
 expressions. The ; mean the end of an expression.
 
@@ -13,13 +13,13 @@ expressions. The ; mean the end of an expression.
 
 A Cabal-like.
 
-* Building your code
-* Downloading the dependencies for your code
-* Building those dependencies
+* Build your code
+* Download the dependencies for your code
+* Build those dependencies
 
 To use cargo to build your code:
 * create a configuration file Cargo.toml
-* Put the source file to the right place (src)
+* Put the source file to the right place: src directory
 
 the Cargo.toml file, two tables:
 * package, for the description and metadata about your package
@@ -64,7 +64,7 @@ let y = if x == 5 {10}else{15};
 
 ### Expressions vs Statements
 
-Expressions return a value, the statements don't.
+Expressions return a value, statements don't.
 There are only two statements in rust
 binding is one of them and it's called declaration statement
 let x = value; doesn't return a value
@@ -88,8 +88,9 @@ a int32 but 10; or 15; return now a unit ()
 
 fn main() {},  fn allow to define function
 
-A fuction declaration with an argument. We nust declare the type of
+A fuction declaration with an argument. We must declare the type of
 the argument
+
 fn  print_number(x: i32) {
   println! ("the value of x is {}, x);
   }
@@ -124,7 +125,7 @@ println!("the value of x is {}", x);
 We can assign a tuple if it's the same type
 let mut x = (1,2);
 let y = (2,3);
-x =y;
+x = y;
 
 We can compare tuples with ==
 We can simulate to return multiple value with a tuple
@@ -138,8 +139,8 @@ struct is a form of record type. The struct type create fields (or
 member) for each element of the struct
 
 struct Point{
-x: i32;
-y: i32;
+  x: i32;
+  y: i32;
 }
 
 fn main(){
@@ -182,7 +183,7 @@ enum Ordering {
     Greater,
 	}
 
-Every varient of the enum is namespaced	
+Every varient of the enum is a namespaced	
 We access the values of the enum with ::
 Ordering::Less. :: is used to access a namespace
 
@@ -211,3 +212,138 @@ fn respond(greeting: &str) -> StringResult {
 	}
 
 ## Match
+
+Like guard in Haskell
+
+let x = 5;
+
+match x {
+  1 => println!("one"),
+  2=> println!("deux"),
+... 
+  _ => println!("something else"),
+  }
+
+match enforce exhaustivneness checking with _ => wich is mandatory
+(like otherwise in haskell).
+
+## Looping
+
+### For and While
+
+for x in 0..10 {
+  println!("x is {}", x);
+}
+
+for var in expression{
+  code
+}
+
+Here the expression is an iterator
+
+let mut x = 5; // mut x: u32
+let mut done = false; // mut done: bool
+
+while !done {
+    x += x - 3;
+    println!("{}", x);
+    if x % 5 == 0 { done = true; }
+}
+
+If you need an infinite loop don't use while true{} but loop{}
+
+let mut x = 5;
+
+loop {
+    x += x - 3;
+    println!("{}", x);
+    if x % 5 == 0 { break; }
+}
+
+Use continue to go to the next iteration
+
+for x in 0u32..10 {
+    if x % 2 == 0 { continue; }
+
+    println!("{}", x);
+}
+
+## String
+
+Two main types &str and String 
+
+### String slice
+
+let string = "Hello"
+Here string is a &str type. The string is saved in the compile
+programm, is statically allocated. It has a fixed size and cannot be
+allocated
+
+### String
+
+It's a memory string, and can grow. it's UTF-8
+
+let mut s = "Hello".to_string(); // mut s: String
+println!("{}", s);
+
+s.push_str(", world.");
+println!("{}", s);
+
+We can concert a String to a &str with &
+
+fn takes_slice(slice: &str) {
+    println!("Got: {}", slice);
+}
+
+fn main() {
+    let s = "Hello".to_string();
+    takes_slice(&s);
+}
+
+## Array, Vector, Slice
+
+### Array
+array: fixed size, immutable by default, same type inside
+
+let mut a = [1,2,4];
+
+let a = [0;20] initialize all the values of a to 0
+
+an array has a type [T;N]
+
+a.len() return the lenght of a
+a.iter() return an iterator
+a[1] access to the second element of a
+
+### Vector
+vestor: dynamic, growable
+has a type <T>
+
+we can use the vec! macro to create a vector
+let v = vec![1,2,3]
+
+### Slice
+
+A slice is a reference to an array
+
+let a = [0, 1, 2, 3, 4];
+let middle = &a[1..4]; // A slice of a: just the elements 1, 2, and 3
+
+for e in middle.iter() {
+    println!("{}", e); // Prints 1, 2, 3
+}
+
+slice has type &[T]
+
+## Standard input
+fn main() {
+    println!("Type something!");
+
+    let input = std::old_io::stdin().read_line().ok().expect("Failed to read line");
+
+    println!("{}", input);
+}
+
+read_line is has a type of IoResult<T>
+If we use the programm in a cron for exemple where there are no input,
+then the expect method will raise the error.
